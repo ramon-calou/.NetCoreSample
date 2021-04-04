@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RestaurantsApi.Models;
+using RestaurantsApi.Services;
 
 namespace RestaurantsApi
 {
@@ -27,12 +28,14 @@ namespace RestaurantsApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // requires using Microsoft.Extensions.Options
+            
             services.Configure<RestaurantStoreDatabaseSettings>(
             Configuration.GetSection(nameof(RestaurantStoreDatabaseSettings)));
 
-            services.AddSingleton<RestaurantStoreDatabaseSettings>(sp =>
+            services.AddSingleton<IRestaurantStoreDatabaseSettings>(sp =>
             sp.GetRequiredService<IOptions<RestaurantStoreDatabaseSettings>>().Value);
+
+            services.AddSingleton<RestaurantService>();
 
             services.AddControllers();
         }

@@ -12,8 +12,8 @@ namespace RestaurantsApi.Models
         [BsonElement("Name")]
         public string name { get; set; }
 
-        public decimal openHour { get; set; }
+        public string OpenHour { get; set; }
 
-        public string closeHour { get; set; }
+        public string CloseHour { get; set; }
     }
 }
