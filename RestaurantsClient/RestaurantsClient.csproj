@@ -7,6 +7,12 @@
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="26.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\jquery.dataTables.min.css" />
+    <None Include="wwwroot\js\jquery.dataTables.min.js" />
   </ItemGroup>
 
 </Project>

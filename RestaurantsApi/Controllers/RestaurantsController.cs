@@ -1,6 +1,7 @@
 using RestaurantsApi.Models;
 using RestaurantsApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
 namespace RestaurantsApi.Controllers
@@ -21,6 +22,7 @@ namespace RestaurantsApi.Controllers
             _restaurantService.Get();
 
         [HttpGet("{id:length(24)}", Name = "GetRestaurant")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<Restaurant> Get(string id)
         {
             var restaurant = _restaurantService.Get(id);
@@ -33,7 +35,23 @@ namespace RestaurantsApi.Controllers
             return restaurant;
         }
 
+        [HttpGet("{time:length(4)}", Name = "GetRestaurantByTime")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+         public ActionResult<List<Restaurant>> GetByTime(string time)
+        {
+            var restaurant = _restaurantService.GetByTime(time);
+
+            if (restaurant == null)
+            {
+                return NotFound();
+            }
+
+            return restaurant;
+        }
+
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Restaurant> Create(Restaurant restaurant)
         {
             _restaurantService.Create(restaurant);

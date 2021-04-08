@@ -1,3 +1,4 @@
+using System;
 namespace RestaurantsClient.Models
 {
     public class Restaurant
@@ -5,7 +6,7 @@ namespace RestaurantsClient.Models
         
         public string name { get; set; }
         
-        public string openHour { get; set; }
-        public string closeHour { get; set; }
+        public int OpenHour { get; set; }
+        public int CloseHour { get; set; }
     }
 }

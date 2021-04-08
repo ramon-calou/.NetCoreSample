@@ -2,7 +2,7 @@ using RestaurantsApi.Models;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
-
+using System;
 namespace RestaurantsApi.Services
 {
     public class RestaurantService
@@ -20,6 +20,12 @@ namespace RestaurantsApi.Services
         public List<Restaurant> Get() =>
             _restaurants.Find(restaurant => true).ToList();
 
+        public List<Restaurant> GetByTime(string time) {
+            var timeCompare = int.Parse(time.Substring(0,4));
+            return _restaurants.Find<Restaurant>(restaurant =>
+             (restaurant.OpenHour <= timeCompare) && (restaurant.CloseHour >= timeCompare)).ToList();
+        }
+            
         public Restaurant Get(string id) =>
             _restaurants.Find<Restaurant>(restaurant => restaurant.Id == id).FirstOrDefault();
 

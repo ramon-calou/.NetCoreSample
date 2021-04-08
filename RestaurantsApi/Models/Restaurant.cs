@@ -1,5 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
 
 namespace RestaurantsApi.Models
 {
@@ -12,8 +13,8 @@ namespace RestaurantsApi.Models
         [BsonElement("Name")]
         public string name { get; set; }
 
-        public string OpenHour { get; set; }
+        public int OpenHour { get; set; }
 
-        public string CloseHour { get; set; }
+        public int CloseHour { get; set; }
     }
 }

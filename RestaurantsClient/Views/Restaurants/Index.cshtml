@@ -1,16 +1,63 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<html>
+    <body>
+        <div class="text-center">
+            <h1 class="display-4">Bem vindo</h1>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+            <div class="form-group">
+                <label for="horarioConsulta">Horário de consulta</label>
+                <input type="time" min="00:00" max="23:59"required class="form-control" id="horarioConsulta" name="horarioConsulta" aria-describedby="horarioConsulta"/>
+                <small id="linkOferta" class="form-text text-muted">Insira o horário que deseja consultar os restaurantes abertos</small>
+                <button id="consult">Consultar</button>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <table id="result-table" class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Nome
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="Restaurants">
+                    
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
 
-    <form asp-controller="Restaurants" asp-action = "processCsv" method="post" enctype="multipart/form-data">
+@section scripts {
+    <script>
+        $( document ).ready(function(){
+            $("#result-table").hide();
+        })
 
-        <input type="file" accept=".csv" name="file" />
-        <hr />
-        <button type="submit">Upload</button>
+        $("#consult").click(function(){
+             $.ajax({
+        url: "/Restaurants/getRestaurantsDataJson",
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        data: {"time": $("#horarioConsulta").val().replace(":", "")},
+        dataType: "json",
+        success: function (data) {
+            var row = "";
+            $.each(data, function(index, item){
+                row+="<tr><td>"+item.name+"</td></tr>";
+            });
+            $("#Restaurants").html(row);    
+            $("#result-table").show();   
+        },
+        error: function (result) {
+            alert("Error");
+        }
+    });
+        })
 
-    </form>
-
-</div>
+        </script>
+}

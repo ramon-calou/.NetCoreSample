@@ -3,12 +3,14 @@ using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using RestaurantsClient.Models;
+using Newtonsoft.Json;
 
 namespace RestaurantsClient.Controllers
 {
@@ -24,6 +26,24 @@ namespace RestaurantsClient.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+         public async Task<ActionResult> getRestaurantsDataJson(String time)
+        {
+            try
+            {
+                string Url = "https://localhost:5001/api/Restaurants/" + time;
+                HttpClient client = new HttpClient();
+                var response = await client.GetAsync(Url);
+                string apiResponse = await response.Content.ReadAsStringAsync();
+                var apiResult = JsonConvert.DeserializeObject<List<Restaurant>>(apiResponse);
+                var jsonResult = Json(apiResult);
+                return jsonResult;
+            }
+            catch
+            {
+                throw new Exception("Não foi possível pegar os dados da API");
+            }            
         }
         
         public async Task<IActionResult> processCsv(IFormFile file)
@@ -41,8 +61,8 @@ namespace RestaurantsClient.Controllers
                             string[] rows = sreader.ReadLine().Split(',');
                             restaurant.name = rows[0].ToString();
                             String[] openCloseHour = (rows[1].ToString()).Split('-');
-                            restaurant.openHour = openCloseHour[0];
-                            restaurant.closeHour = openCloseHour[1];
+                            restaurant.OpenHour = int.Parse(openCloseHour[0].Replace(":", ""));
+                            restaurant.CloseHour = int.Parse(openCloseHour[1].Replace(":", ""));
                             restaurantsUpload.Add(restaurant);
                         }
                     }
