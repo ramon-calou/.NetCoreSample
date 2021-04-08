@@ -28,6 +28,11 @@ namespace RestaurantsClient.Controllers
             return View();
         }
 
+         public IActionResult Upload()
+        {
+            return View();
+        }
+
          public async Task<ActionResult> getRestaurantsDataJson(String time)
         {
             try
