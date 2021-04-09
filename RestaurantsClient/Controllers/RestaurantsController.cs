@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -71,11 +72,19 @@ namespace RestaurantsClient.Controllers
                             restaurantsUpload.Add(restaurant);
                         }
                     }
-                    return null;
+
+                    string Url = "https://localhost:5001/api/Restaurants";
+                    HttpClient client = new HttpClient();
+                    var serializedObject = JsonConvert.SerializeObject(restaurantsUpload);
+                    var buffer = System.Text.Encoding.UTF8.GetBytes(serializedObject);
+                    var byteContent = new ByteArrayContent(buffer);
+                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    var response = await client.PostAsync(Url, byteContent);
+                    return RedirectToAction(actionName: "Upload");
                 }
                 else
                 {
-                    return null;
+                    return Upload();
                 }             
             }catch{
                 throw new Exception("Ocorreu um erro ao realizar o processamento dos dados");

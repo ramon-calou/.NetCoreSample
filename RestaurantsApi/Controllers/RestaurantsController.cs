@@ -3,6 +3,7 @@ using RestaurantsApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace RestaurantsApi.Controllers
 {
@@ -49,14 +50,29 @@ namespace RestaurantsApi.Controllers
             return restaurant;
         }
 
+        // [HttpPost]
+        // [ProducesResponseType(StatusCodes.Status201Created)]
+        // [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        // public ActionResult<Restaurant> Create(Restaurant restaurant)
+        // {
+        //     _restaurantService.Create(restaurant);
+
+        //     return CreatedAtRoute("GetRestaurant", new { id = restaurant.Id.ToString() }, restaurant);
+        // }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Restaurant> Create(Restaurant restaurant)
+        public ActionResult CreateMany(List<Restaurant> restaurants)
         {
-            _restaurantService.Create(restaurant);
 
-            return CreatedAtRoute("GetRestaurant", new { id = restaurant.Id.ToString() }, restaurant);
+           var result = _restaurantService.CreatMany(restaurants);
+
+            if(result != null){
+                return StatusCode(201);
+            }
+
+            return StatusCode(400);
         }
 
         [HttpPut("{id:length(24)}")]

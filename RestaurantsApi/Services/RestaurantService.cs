@@ -23,7 +23,7 @@ namespace RestaurantsApi.Services
         public List<Restaurant> GetByTime(string time) {
             var timeCompare = int.Parse(time.Substring(0,4));
             return _restaurants.Find<Restaurant>(restaurant =>
-             (restaurant.OpenHour <= timeCompare) && (restaurant.CloseHour >= timeCompare)).ToList();
+             (restaurant.OpenHour <= timeCompare) && (restaurant.CloseHour > timeCompare)).ToList();
         }
             
         public Restaurant Get(string id) =>
@@ -32,6 +32,12 @@ namespace RestaurantsApi.Services
         public Restaurant Create(Restaurant restaurant)
         {
             _restaurants.InsertOne(restaurant);
+            return restaurant;
+        }
+
+        public List<Restaurant> CreatMany(List<Restaurant> restaurant)
+        {
+             _restaurants.InsertMany(restaurant);
             return restaurant;
         }
 

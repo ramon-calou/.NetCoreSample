@@ -11,6 +11,9 @@
                 <input type="time" min="00:00" max="23:59"required class="form-control" id="horarioConsulta" name="horarioConsulta" aria-describedby="horarioConsulta"/>
                 <small id="linkOferta" class="form-text text-muted">Insira o horário que deseja consultar os restaurantes abertos</small>
                 <button id="consult">Consultar</button>
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
             </div>
             <div class="panel panel-primary">
                 <div class="panel-body">
@@ -23,7 +26,6 @@
                             </tr>
                         </thead>
                         <tbody id="Restaurants">
-                    
                         </tbody>
                     </table>
                 </div>
@@ -36,27 +38,34 @@
     <script>
         $( document ).ready(function(){
             $("#result-table").hide();
+            $(".spinner-border").hide();
         })
 
         $("#consult").click(function(){
-             $.ajax({
-        url: "/Restaurants/getRestaurantsDataJson",
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        data: {"time": $("#horarioConsulta").val().replace(":", "")},
-        dataType: "json",
-        success: function (data) {
-            var row = "";
-            $.each(data, function(index, item){
-                row+="<tr><td>"+item.name+"</td></tr>";
-            });
-            $("#Restaurants").html(row);    
-            $("#result-table").show();   
-        },
-        error: function (result) {
-            alert("Error");
-        }
-    });
+            if($("#horarioConsulta").val() != ""){
+                $(".spinner-border").show();
+                $.ajax({
+                        url: "/Restaurants/getRestaurantsDataJson",
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        data: {"time": $("#horarioConsulta").val().replace(":", "")},
+                        dataType: "json",
+                        success: function (data) {
+                            var row = "";
+                            $.each(data, function(index, item){
+                                row+="<tr><td>"+item.name+"</td></tr>";
+                            });
+                            $("#Restaurants").html(row);    
+                            $("#result-table").show();  
+                            $(".spinner-border").hide(); 
+                        },
+                        error: function (result) {
+                            alert("Error");
+                             $(".spinner-border").hide();
+                        }
+                    });
+            }
+             
         })
 
         </script>
