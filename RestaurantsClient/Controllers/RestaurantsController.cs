@@ -38,7 +38,7 @@ namespace RestaurantsClient.Controllers
         {
             try
             {
-                string Url = "https://localhost:5001/api/Restaurants/" + time;
+                string Url = "http://restaurantsapi-container:80/api/Restaurants/" + time;
                 HttpClient client = new HttpClient();
                 var response = await client.GetAsync(Url);
                 string apiResponse = await response.Content.ReadAsStringAsync();
@@ -73,7 +73,7 @@ namespace RestaurantsClient.Controllers
                         }
                     }
 
-                    string Url = "https://localhost:5001/api/Restaurants";
+                    string Url = "http://restaurantsapi-container:80/api/Restaurants";
                     HttpClient client = new HttpClient();
                     var serializedObject = JsonConvert.SerializeObject(restaurantsUpload);
                     var buffer = System.Text.Encoding.UTF8.GetBytes(serializedObject);
