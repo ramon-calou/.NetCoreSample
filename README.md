@@ -27,10 +27,3 @@ Na pasta raiz:
 
 - docker-compose up
 
-#### Conclusão do Desafio
-
-Caso houvesse mais tempo, teria estudo mais sobre o .NetCore e o mongoDB para realizar diversas modificações/melhorias no código;
-Este foi meu primeiro contato com um código .NetCore e com o MongoDB; 
-Devido a alguns problemas pessoais e profissionais, não consegui terminar o desafio dentro do prazo;
-
-
